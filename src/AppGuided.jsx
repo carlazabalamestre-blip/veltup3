@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
 
+const API_BASE_URL = import.meta.env.PROD ? "" : "http://localhost:3001";
+
 const meals = [
   {
     id: 1,
@@ -437,19 +439,16 @@ function AppGuided() {
     }));
 
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/veltup-guided-chat",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            service: form.service,
-            messages: updatedMessages,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/veltup-guided-chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service: form.service,
+          messages: updatedMessages,
+        }),
+      });
 
       const data = await response.json();
 
@@ -484,7 +483,7 @@ function AppGuided() {
           {
             role: "assistant",
             text:
-              "Ara mateix no puc connectar amb l’assistent de VELTUP. Revisa que el servidor estigui encès amb npm run server.",
+              "Ara mateix no puc connectar amb l’assistent de VELTUP. Revisa que la connexió amb l’API estigui configurada correctament.",
           },
         ],
       }));
